@@ -1,0 +1,171 @@
+<div class="flex  justify-center h-[85vh]">
+    <div class="w-3/4  border-2 shadow-md   flex items-center  flex-col p-2">
+        <form action="" [formGroup]="formProduct" (ngSubmit)="AddProduct()">
+            <div class="flex h-[10%]">
+                <h1 class="font-bold">Nouveau Produit</h1>
+                <span class="mx-10 text-green-700 font-bold text-xl" *ngIf="success">Produit Ajoutéé avec success</span>
+                <span class="mx-10 text-red-500 font-bold text-xl " *ngIf="error">Une erreur s'est produite veillez
+                    revoyer les infos
+                    saisis</span>
+            </div>
+            <div class="grid grid-cols-2 gap-4 h-[20%] items-center">
+                <div>
+                    <div class="">
+                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Article
+                        </label>
+                        <input formControlName="libelle" (input)="search($event)"
+                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                            placeholder="">
+                    </div>
+                    <div *ngIf="libelle!.invalid && (libelle!.dirty || libelle!.touched)"
+                        class="text-red-500 flex items-center justify-center">
+                        <div *ngIf="libelle!.errors?.['required']">
+                            le libelle est obligatoire
+                        </div>
+                        <div *ngIf="libelle!.errors?.['minlength']">
+                            le libelle doit contenir 2 caracteres au moins
+                        </div>
+
+                    </div>
+                    <div class="">
+                        <label for="password"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Marque
+                        </label>
+                        <select formControlName="marque_id"
+                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
+                            <option value="">Chosir la marque</option>
+                            <option value="{{item.id}}" *ngFor="let item of marques">{{item.libelle}}</option>
+
+                        </select>
+                    </div>
+
+                </div>
+
+                <div>
+                    <div class="grid grid-cols-2 gap-5">
+                        <div>
+                            <div class="">
+                                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    Prix D'achat</label>
+                                <input formControlName="prixDetail" type="number"
+                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                                    placeholder="" required>
+                            </div>
+                            <div *ngIf="prixDetail!.invalid && (prixDetail!.dirty || prixDetail!.touched)"
+                                class="text-red-500 flex items-center justify-center">
+                                <div *ngIf="prixDetail!.errors?.['required']">
+                                    le prix d'achat est obligatoire
+                                </div>
+                                <div *ngIf="prixDetail!.errors?.['minlength']">
+                                    le prix d'achat doit contenir 2 caracteres au moins
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="">
+                                <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    Quantité Stock</label>
+                                <input formControlName="quantite" type="number"
+                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
+                            </div>
+                            <div *ngIf="quantite!.invalid && (quantite!.dirty || quantite!.touched)"
+                                class="text-red-500 flex items-center justify-center">
+                                <div *ngIf="quantite!.errors?.['required']">
+                                    la quantité est obligatoire
+                                </div>
+                                <div *ngIf="quantite!.errors?.['minlength']">
+                                    la quantite doit contenir 2 caracteres au moins
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Catégorie</label>
+                        <select formControlName="categorie_id"
+                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
+                            <option value="">Choisir la catégorie</option>
+                            <option value="{{item.id}}" *ngFor="let item of categories">{{item.libelle}}</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+            <div class="flex items-center justify-center h-[25%]   w-full flex-col my-5">
+                <label for="">Code</label>
+                <input type="search" formControlName="code"
+                    class="w-64  h-16   text-md text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="code">
+            </div>
+            <div class="grid grid-cols-2 gap-10 h-[50%]">
+                <div class="border border-gray-900  mb-5 max-h-40 overflow-y-auto p-2 rounded-sm">
+                    <thead class="flex justify-content-evenly bg-gray-600 text-white rounded-sm"
+                        *ngIf="caracteristiques.length">
+                        <th>libelle</th>
+                        <th>valeur</th>
+                        <th>Action</th>
+                    </thead>
+                    <tbody formArrayName="caracteristiques">
+                        <tr *ngFor="let item of caracteristiques.controls; let i=index" [formGroupName]="i"
+                            class="flex items-center justify-content-evenly">
+                            <td class="mr-5">
+                                <select formControlName="caracteristique_id" (change)="valeurGetLibelle($event)"
+                                    class="shadow-sm  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                                    placeholder="">
+                                    <option value="{{items.id}}" *ngFor="let items of ristiques">{{items.libelle}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td>
+                                <ng-container
+                                    *ngIf="isInputField(item.get('caracteristique_id')?.value); else selectField">
+                                    <input formControlName="valeur" type="text" placeholder="Valeur"
+                                        class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-1 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                </ng-container>
+                                <ng-template #selectField>
+                                    <select formControlName="valeur"
+                                        class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-1 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                        <option>choisir</option>
+                                        <option
+                                            *ngFor="let valeur of getValeursForLibelle(item.get('caracteristique_id')?.value)">
+                                            {{valeur}}</option>
+
+                                    </select>
+                                </ng-template>
+
+                        </tr>
+                    </tbody>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="rounded-md border border-indigo-500 bg-gray-50 p-4 shadow-md w-36">
+                        <label for="upload" class="flex flex-col items-center gap-2 cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 fill-white stroke-indigo-500"
+                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <span class="text-gray-600 font-medium">Image</span>
+                        </label>
+                        <input id="upload" type="file" class="hidden" (change)="handleFileInput($event)"
+                            accept=".jpg, .jpeg, .png" />
+                        <img [src]="formProduct.get('image')!.value" alt=""
+                            class="formatImage flex items-center w-full">
+                    </div>
+                    <div class="mt-2">
+                        <button type="button" (click)="AddCarc()"
+                            class="focus:outline-none text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Ajouter
+                            une caractéristique</button>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center justify-center">
+                <button type="submit" [disabled]="formProduct.invalid"
+                    class="focus:outline-none text-white bg-gray-700 hover:bg-gray-700 focus:ring-4 focus:ring-gray-700 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Ajouter</button>
+                <button type="button"
+                    class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Annuler</button>
+            </div>
+
+
+        </form>
+    </div>
+</div>

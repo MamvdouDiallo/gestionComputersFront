@@ -1,0 +1,176 @@
+<div class="w-full h-[95%]  bg-white-600  pro flex flex-col items-center shadow-xl">
+    <div class="w-5/6  bg-gray-200 h-[10%] flex items-center justify-center rounded-md">
+        <input type="text" placeholder="Entrer la reference" class="text-center h-12 rounded-md"
+            (input)="search($event)">
+    </div>
+    <span class="font-bold text-green-400" *ngIf="succursales.length">
+        Votre quantité est epuisé veuillez selectionner un de vos partenaires
+    </span>
+    <div class="h-[10%]" class="flex relative flex-row items-center justify-between  w-4/6 ">
+        <div *ngFor="let item of succursales" let i=index class="mt-2 mr-3 ">
+            <button (click)="displayModal(item.succursale_id)"
+                class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                type="button">{{item.nom}} <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 4 4 4-4" />
+                </svg></button>
+            <div #succursale_id
+                class="z-10  absolute  hidden w-56 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
+                <ul *ngIf="objetTrouve" class="p-3 space-y-3 text-sm text-gray-700 dark:text-gray-200 flex flex-col">
+                    <span class=""> Addresse: {{objetTrouve.addresse}}</span>
+                    <span> Quantité {{objetTrouve.quantite}}</span>
+                    <span> Telephone:{{objetTrouve.telephone}}</span>
+                    <span> PrixDetail:{{objetTrouve.prixDetail}}</span>
+                    <span> PrixEnGros:{{objetTrouve.prixEnGros}}</span>
+                    <div class="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
+                        <input id="bordered-checkbox-1" (change)="valChange($event,objetTrouve.succursale_id)"
+                            type="checkbox" value="" name="bordered-checkbox"
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="bordered-checkbox-1"
+                            class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Selectionner</label>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="relative w-5/6 h-[80%] flex flex-col justify-between items-center">
+        <div class="flex w-full flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md"
+            *ngIf="carBydefaut">
+            <div class="relative mx-4 mt-4 h-80 overflow-hidden rounded-xl bg-white bg-clip-border text-gray-700">
+                <img src="{{src}}" class="h-full w-full object-cover" />
+            </div>
+            <div class="p-6">
+                <div class="mb-2 flex items-center justify-between">
+                    <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                        {{ produitTrouve.libelle }}
+                    </h5>
+                    <span class="text-3xl font-bold text-gray-900 dark:text-white">${{produitTrouve.prixDetail
+                        }}</span>
+                </div>
+                <p class="block font-sans h-20 text-sm font-normal leading-normal text-gray-700 antialiased opacity-75">
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sunt, obcaecati? Odio, rem perspiciatis
+                    quibusdam rerum sit ullam quos
+                </p>
+                <div class="px-1 pt-4 pb-1 flex items-center justify-evenly">
+                    <span *ngFor="let caract of produitTrouve.caracteristiques"
+                        class="flex  bg-gray-200 rounded-full px-5 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                        {{caract.libelle}} : {{caract.valeur}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="border  border-blue-300 shadow  rounded-md w-5/6 h-4/5 " *ngIf="loading">
+            <div class="animate-pulse flex space-x-4">
+                <div class="rounded-full bg-slate-200 h-10 w-10"></div>
+                <div class="flex-1 space-y-6 py-1">
+                    <div class="h-2 bg-slate-200 rounded"></div>
+                    <div class="space-y-3">
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="h-2 bg-slate-200 rounded col-span-2"></div>
+                            <div class="h-2 bg-slate-200 rounded col-span-1"></div>
+                        </div>
+                        <div class="h-2 bg-slate-200 rounded"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="mb-2">
+            <button data-modal-target="large-modal" data-modal-toggle="large-modal" [hidden]="!carBydefaut" #btnCart
+                [disabled]="btnAdd || succursales.length>0" (click)="add()"
+                class="text-white mb-2 bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                Add to Cart
+            </button>
+        </div>
+    </div>
+
+    <!--debutmodal-->
+    <div id="large-modal" tabindex="-1"
+        class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative w-full max-w-4xl max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-medium text-gray-900 dark:text-white">
+                        Ajout panier
+                    </h3>
+                    <button type="button"
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        data-modal-hide="large-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <form [formGroup]="FormProductToPanier" (ngSubmit)="addProductToPanier()">
+                    <div class="p-6 space-y-6">
+                        <div class="flex items-center   justify-evenly">
+                            <div class="mb-3 hidden">
+                                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    libelle</label>
+                                <input type="text" id=""
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-50 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    readonly formControlName="id_succursale">
+                            </div>
+                            <div class="mb-3 hidden">
+                                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    libelle</label>
+                                <input type="text" id=""
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-50 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    readonly formControlName="product_id">
+                            </div>
+                            <div class="mb-3 flex items-center justify-center">
+                                <label for="email"
+                                    class="block mb-2 mr-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    Libelle</label>
+                                <input type="text" id="" readonly
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-50 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    formControlName="libelle">
+                            </div>
+                            <div class="mb-3 flex items-center justify-center">
+                                <label for="email"
+                                    class="block mb-2  mr-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    Quantite</label>
+                                <input type="number" formControlName="quantite" (change)="controleQuantite($event)"
+                                    (keyup)="checkValue($event)" min="0"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-50 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            </div>
+                            <div class="mb-3 flex items-center justify-center">
+                                <label for="password"
+                                    class="block mb-2 text-sm mr-2 font-medium text-gray-900 dark:text-white">
+                                    Prix</label>
+                                <input type="number" formControlName="prix" (input)="checkPrix($event)"
+                                    (keyup)="checkValue($event)" #inputPrix
+                                    class="bg-gray-50 border  text-gray-900 text-sm rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Modal footer -->
+                    <div
+                        class="flex items-center justify-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                        <button data-modal-hide="large-modal" type="submit" [disabled]="FormProductToPanier.invalid"
+                            class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700">
+                            Ajouter</button>
+                        <button data-modal-hide="large-modal" type="button"
+                            class="text-white bg-red-700 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-700 rounded-lg border border-red-700 text-sm font-medium px-5 py-2.5  focus:z-10 dark:bg-gray-700">Fermer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--fin-->
+
+</div>
