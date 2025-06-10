@@ -24,7 +24,6 @@ export class NavbarComponent implements OnInit {
   }
   constructor(private router: Router) {
   }
-
   loggout() {
     localStorage.removeItem('usr')
     localStorage.removeItem('tkn')

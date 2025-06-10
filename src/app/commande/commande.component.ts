@@ -6,6 +6,7 @@ import { NavbarComponent } from "../navbar/navbar.component";
 import { FormBuilder } from '@angular/forms';
 import { tick } from '@angular/core/testing';
 import { CommandeService } from '../services/commande.service';
+import { initFlowbite } from 'flowbite';
 
 @Component({
     selector: 'app-commande',
@@ -17,6 +18,7 @@ import { CommandeService } from '../services/commande.service';
 export class CommandeComponent implements OnInit {
     ngOnInit() {
       //  localStorage.removeItem('tkn')
+      initFlowbite();
     }
     @ViewChild(PanierComponent) child!: PanierComponent;
     @ViewChild(ProductComponent) child2!: ProductComponent;

@@ -29,7 +29,6 @@ import { AuthServiceService } from './services/auth-service.service';
         multi: true,
     },
         AuthServiceService, AuthGuard,
-
     ],
     bootstrap: [AppComponent],
     imports: [

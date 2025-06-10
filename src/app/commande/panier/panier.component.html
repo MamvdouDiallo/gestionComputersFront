@@ -61,7 +61,7 @@
     </div>
     <div
         class="flex flew-row w-full h-1/5 lg:justify-evenly sm:justify-start texte bg-gray-100 lg:items-center sm:items-center  lg:flex-row  md:flex-col sm:flex-col">
-        <div class="flex h-14">
+        <!-- <div class="flex h-14">
             <span
                 class="inline-flex rounded-l-lg items-center text-sm text-white bg-red-600  w-20 text-center  border-gray-300  dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600 px-5">
                 Remise
@@ -69,7 +69,7 @@
             <input type="number" (input)="setRemise($event)" readonly #myInput min="0" max="100"
                 class="bg-gray-50 border w-64 rounded-r-lg text-gray-900 focus:ring-blue-500 focus:border-blue-500 block  text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 formControlName="remise" placeholder="0 (En pourcetage)">
-        </div>
+        </div> -->
         <div class="flex h-14 ">
             <span
                 class="inline-flex items-center rounded-l-lg text-sm text-white bg-gray-700   dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600 px-5">
@@ -79,9 +79,9 @@
                 class="bg-gray-50 border  rounded-r-lg text-gray-900 focus:ring-blue-500 focus:border-blue-500 block text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="0 FCFA" formControlName="totale">
         </div>
-        <button type="button" (click)="tot()" [disabled]="prodChoices.length===0"
-            data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
-            class=" h-1/4 px-3 py-2 text-xs font-medium text-center text-white bg-gray-700 rounded-md focus:ring-4 ">Suivant</button>
+        <!-- <button type="button" (click)="tot()" [disabled]="prodChoices.length===0"
+            data-modal-target="authentication-modal1" data-modal-toggle="authentication-modal1"
+            class=" h-1/4 px-3 py-2 text-xs font-medium text-center text-white bg-gray-700 rounded-md focus:ring-4 ">Suivant</button> -->
     </div>
 
 
@@ -94,7 +94,7 @@
     <!-- Modal toggle -->
 
     <!-- Main modal -->
-    <div id="authentication-modal" tabindex="-1" aria-hidden="true"
+    <div id="authentication-modal1" tabindex="-1" aria-hidden="true"
         class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative w-full max-w-md max-h-full">
             <!-- Modal content -->

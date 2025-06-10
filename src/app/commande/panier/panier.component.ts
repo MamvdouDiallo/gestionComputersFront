@@ -4,6 +4,7 @@ import { NavbarComponent } from "../../navbar/navbar.component";
 import gsap from 'gsap';
 import { Product } from 'src/Resons';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { initFlowbite } from 'flowbite';
 
 
 @Component({
@@ -33,6 +34,7 @@ export class PanierComponent implements OnInit {
         });
     }
     ngOnInit() {
+        initFlowbite();
         const storedPanier = localStorage.getItem('panier');
         if (storedPanier) {
             const parsedPanier = JSON.parse(storedPanier);
@@ -167,8 +169,8 @@ export class PanierComponent implements OnInit {
         tl.from('.panier', { duration: 1.4, width: 0, opacity: 0, x: -50 })
         tl.to('.panier', { duration: 1.4, opacity: 1, x: 0, ease: 'power2.out' });
 
-        tl.from('.texte',{ duration:1,opacity:0,y:10,delay:-0.9});
-        tl.to('.texte',{ duration:1,opacity:1,y:10,ease:'power2.out' });
+        tl.from('.texte', { duration: 1, opacity: 0, y: 10, delay: -0.9 });
+        tl.to('.texte', { duration: 1, opacity: 1, y: 10, ease: 'power2.out' });
 
     }
 }

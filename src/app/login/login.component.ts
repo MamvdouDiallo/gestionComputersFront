@@ -43,7 +43,6 @@ export class LoginComponent {
           this.router.navigate(['/accueil'])
           localStorage.setItem('usr', JSON.stringify(x.data.user));
           this.lgn = true
-          //  console.log(this.tes.lgn);
         }
         else {
           this.errorLogin = true;

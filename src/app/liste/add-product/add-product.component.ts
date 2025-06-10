@@ -1,20 +1,29 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Form, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  Form,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Caracteristique, Resp } from 'src/app/Interface';
 import { ProductService } from 'src/app/services/product.service';
 import { Reponse } from 'src/dataInterface';
 import { Categorie, Marque, Repons2 } from 'src/dataInterface2';
+import Swal from 'sweetalert2';
 
 @Component({
   standalone: true,
   selector: 'app-add-product',
   templateUrl: './add-product.component.html',
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  styleUrls: ['./add-product.component.css']
+  styleUrls: ['./add-product.component.css'],
 })
 export class AddProductComponent implements OnInit {
-  i: number = 0
+  i: number = 0;
   selectBool!: boolean;
 
   page: number = 1;
@@ -22,157 +31,145 @@ export class AddProductComponent implements OnInit {
   tableSize: number = 7;
   tableSizes: any = [3, 6, 9, 12];
 
-
-
-
   success: boolean = false;
-  photo!: File;
+  photo!: any;
   error: boolean = false;
   categories!: Array<Categorie>;
   marques!: Array<Marque>;
   ristiques!: Array<Marque>;
   ristiques2!: Array<Marque>;
-  constructor(private productService: ProductService, private fb: FormBuilder) {
-
-  }
+  constructor(
+    private productService: ProductService,
+    private fb: FormBuilder
+  ) {}
   ngOnInit(): void {
     this.categorie();
     this.marquee();
     this.ristique();
   }
 
-
-
   search(text: Event) {
     let a = text.target as HTMLInputElement;
-    return this.productService.search2<Resp>({ "libelle": a.value }).subscribe((data: Resp) => {
-      if (data.code === 200) {
-        this.addCara(data.data.caracteristiques)
-        this.formProduct.patchValue(data.data)
-      }
-    })
+    return this.productService
+      .search2<Resp>({ libelle: a.value })
+      .subscribe((data: Resp) => {
+        if (data.code === 200) {
+          this.addCara(data.data.caracteristiques);
+          this.formProduct.patchValue(data.data);
+        }
+      });
   }
 
   addCara(data: Caracteristique[]) {
     for (const element of data) {
-      this.caracteristiques.push(this.fb.group({
-        caracteristique_id: ['', Validators.required],
-        valeur: ['', Validators.required]
-      }))
+      this.caracteristiques.push(
+        this.fb.group({
+          caracteristique_id: ['', Validators.required],
+          valeur: ['', Validators.required],
+        })
+      );
     }
   }
 
   formProduct: FormGroup = this.fb.group({
-    libelle: ["", [Validators.required, Validators.minLength(2)]],
-    prixDetail: ["", [Validators.required, Validators.minLength(2)]],
-    quantite: ["", [Validators.required]],
-    unite_id: ["1"],
-    succursale_id: ["1"],
-    marque_id: ["", [Validators.required]],
-    categorie_id: ["", [Validators.required]],
-    image: ["", [Validators.required]],
-    code: ["", [Validators.required]],
-    caracteristiques: this.fb.array([
-    ])
-  })
+    libelle: ['', [Validators.required, Validators.minLength(2)]],
+    prixDetail: ['', [Validators.required, Validators.minLength(2)]],
+    quantite: ['', [Validators.required]],
+    unite_id: ['1'],
+    succursale_id: ['1'],
+    marque_id: ['', [Validators.required]],
+    categorie_id: ['', [Validators.required]],
+    image: ['', [Validators.required]],
+    code: ['', [Validators.required]],
+    caracteristiques: this.fb.array([]),
+  });
 
-
-  get libelle() { return this.formProduct.get('libelle'); }
-  get prixDetail() { return this.formProduct.get('prixDetail'); }
-  get quantite() { return this.formProduct.get('quantite'); }
-  get marque_id() { return this.formProduct.get('marque_id'); }
-  get categorie_id() { return this.formProduct.get('categorie_id'); }
-  get code() { return this.formProduct.get('code'); }
-  get image() { return this.formProduct.get('image'); }
+  get libelle() {
+    return this.formProduct.get('libelle');
+  }
+  get prixDetail() {
+    return this.formProduct.get('prixDetail');
+  }
+  get quantite() {
+    return this.formProduct.get('quantite');
+  }
+  get marque_id() {
+    return this.formProduct.get('marque_id');
+  }
+  get categorie_id() {
+    return this.formProduct.get('categorie_id');
+  }
+  get code() {
+    return this.formProduct.get('code');
+  }
+  get image() {
+    return this.formProduct.get('image');
+  }
   //get caracteristiques() { return this.formProduct.get('caracteristiques'); }
-  get caracteristiques() { return this.formProduct.get('caracteristiques') as FormArray; }
+  get caracteristiques() {
+    return this.formProduct.get('caracteristiques') as FormArray;
+  }
 
   public file!: File;
   handleFileInput(event: any) {
     this.photo = event.target.files[0];
+    console.log(this.photo);
     let fileReader = new FileReader();
     fileReader.readAsDataURL(this.photo);
-    fileReader.addEventListener('load', () => {
+    fileReader.addEventListener('load', (e) => {
       const defaultPhoto = fileReader.result as string;
       console.log(defaultPhoto);
-      this.formProduct.get('image')?.setValue(defaultPhoto);
+      this.photo = e.target?.result;
+      this.formProduct.get('image')?.setValue(this.photo);
     });
   }
 
-
-
   getsai(e: Event) {
-    let a = e.target as HTMLInputElement
+    let a = e.target as HTMLInputElement;
     console.log(a.value);
-
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   removeRistique(event: Event) {
     let a = event.target as HTMLInputElement;
-    this.ristiques = this.ristiques.filter(i => i.id !== +a.value)
+    this.ristiques = this.ristiques.filter((i) => i.id !== +a.value);
     //return this.ristiques;
   }
 
-
-
-
-
   categorie() {
-    return this.productService.all<Repons2>("categories").subscribe(
-      {
-        next: (x: Repons2) => {
-          console.log(x.data);
-          // this.child.categories = x.data;
-          this.categories = x.data
-        },
-        error: err => console.error('An error occurred', err),
-        complete: () => console.log('There are no more vowels.')
-      }
-    )
+    return this.productService.all<Repons2>('categories').subscribe({
+      next: (x: Repons2) => {
+        console.log(x.data);
+        // this.child.categories = x.data;
+        this.categories = x.data;
+      },
+      error: (err) => console.error('An error occurred', err),
+      complete: () => console.log('There are no more vowels.'),
+    });
   }
 
   marquee() {
-    return this.productService.all<Repons2>("marques").subscribe(
-      {
-        next: (x: Repons2) => {
-          console.log(x.data)
-          //    this.child.marques = x.data;
-          this.marques = x.data
-        },
-        error: err => console.error('An error occurred', err),
-        complete: () => console.log('There are no more vowels.')
-      }
-    )
+    return this.productService.all<Repons2>('marques').subscribe({
+      next: (x: Repons2) => {
+        console.log(x.data);
+        //    this.child.marques = x.data;
+        this.marques = x.data;
+      },
+      error: (err) => console.error('An error occurred', err),
+      complete: () => console.log('There are no more vowels.'),
+    });
   }
   ristique() {
-    return this.productService.all<Repons2>("ristiques").subscribe(
-      {
-        next: (x: Repons2) => {
-          console.log(x.data)
-          this.ristiques = x.data
-        },
-        error: err => console.error('An error occurred', err),
-        complete: () => console.log('There are no more vowels.')
-      }
-    )
+    return this.productService.all<Repons2>('ristiques').subscribe({
+      next: (x: Repons2) => {
+        console.log(x.data);
+        this.ristiques = x.data;
+      },
+      error: (err) => console.error('An error occurred', err),
+      complete: () => console.log('There are no more vowels.'),
+    });
   }
 
-
-  tableau: any
+  tableau: any;
 
   getRowById(id: Event) {
     let i = id.target as HTMLInputElement;
@@ -194,7 +191,7 @@ export class AddProductComponent implements OnInit {
   AddCarc() {
     const carac = this.fb.group({
       caracteristique_id: ['', Validators.required],
-      valeur: ['', Validators.required]
+      valeur: ['', Validators.required],
     });
     this.caracteristiques.push(carac);
   }
@@ -202,13 +199,18 @@ export class AddProductComponent implements OnInit {
     this.caracteristiques.removeAt(Index);
   }
 
-
   AddProduct() {
     console.log(this.formProduct.value);
-    return this.productService.add<Repons2>("products", this.formProduct.value).subscribe(
-      (value: Repons2) => {
+    return this.productService
+      .add<Repons2>('products', this.formProduct.value)
+      .subscribe((value: Repons2) => {
         if (value.code === 200) {
-          this.success = true;
+          //  this.success = true;
+          Swal.fire({
+            icon: 'success',
+            title: 'success...',
+            text: 'Produit ajouté avec success',
+          });
           setTimeout(() => {
             this.success = false;
           }, 5000);
@@ -220,23 +222,19 @@ export class AddProductComponent implements OnInit {
           }, 5000);
         }
         console.log(value);
-      }
-    )
-
+      });
   }
-
 
   onSelectChange(event: Event) {
     let val = event.target as HTMLInputElement;
     const selectedValue = +val.value;
-    this.ristiques = this.ristiques.filter(item => item.id !== selectedValue);
+    this.ristiques = this.ristiques.filter((item) => item.id !== selectedValue);
     //  this.ristiques2 = this.ristiques
-
   }
 
   utilisateurAEffectueSelection: boolean = false;
   valeurGetLibelle(cart: Event) {
-    this.utilisateurAEffectueSelection = true
+    this.utilisateurAEffectueSelection = true;
     const libelleControl = this.caracteristiques.get('caracteristique_id');
     const idControl = this.caracteristiques.get('caracteristique_id');
 
@@ -244,16 +242,19 @@ export class AddProductComponent implements OnInit {
       const selectedLibelle = libelleControl.value;
       idControl.setValue(selectedLibelle);
     }
-
   }
 
   getValeursForLibelle(libelleValue: number) {
-    const carateristique = this.ristiques.find((item: any) => item.id == libelleValue);
+    const carateristique = this.ristiques.find(
+      (item: any) => item.id == libelleValue
+    );
     return carateristique ? carateristique.valeur!.split(',') : [];
   }
 
   isInputField(libelleValue: number): boolean {
-    const caracteristique = this.ristiques.find((item: any) => item.id == libelleValue);
+    const caracteristique = this.ristiques.find(
+      (item: any) => item.id == libelleValue
+    );
     return caracteristique ? caracteristique.valeur === null : false;
   }
 }

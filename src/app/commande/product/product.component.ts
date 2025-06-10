@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ProductI, Reponse, SuccursaleI } from 'src/dataInterface';
 import { ActivatedRoute } from '@angular/router';
 import gsap from 'gsap';
+import { initFlowbite } from 'flowbite';
 @Component({
   selector: 'app-product',
   standalone: true,
@@ -16,6 +17,8 @@ import gsap from 'gsap';
 export class ProductComponent implements OnInit {
 ngOnInit() {
   //this.anime()
+  initFlowbite();
+
 }
 
 

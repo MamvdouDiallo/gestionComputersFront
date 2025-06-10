@@ -7,6 +7,7 @@ import { AddProductComponent } from './add-product/add-product.component';
 import { Produit } from '../Interface';
 import { Router } from '@angular/router';
 import gsap from 'gsap';
+import { initFlowbite } from 'flowbite';
 @Component({
   selector: 'app-liste',
   templateUrl: './liste.component.html',
@@ -31,6 +32,8 @@ export class ListeComponent implements OnInit {
   constructor(private productService: ProductService, private fb: FormBuilder, private router: Router) {
   }
   ngOnInit() {
+    initFlowbite();
+
     this.all();
     this.categorie();
     this.marque();
